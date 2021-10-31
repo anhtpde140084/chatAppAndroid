@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="error">#B00020</color>
     <color name="received_message_background">#090D16</color>
+    <color name="background_navigation">#000080</color>
 </resources>
