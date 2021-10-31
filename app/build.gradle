@@ -51,6 +51,13 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:22.0.0'
     implementation 'com.google.firebase:firebase-firestore:23.0.4'
 
+
+    //sdk
+    implementation platform('com.google.firebase:firebase-bom:29.0.0')
+    implementation 'com.google.firebase:firebase-auth'
+
+
+
     // multi dex
     implementation 'androidx.multidex:multidex:2.0.1'
 
