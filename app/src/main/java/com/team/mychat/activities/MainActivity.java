@@ -36,7 +36,7 @@ import com.team.mychat.utilities.PreferenceManager;
 import java.util.HashMap;
 
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private ActivityMainBinding binding;
     private PreferenceManager preferenceManager;

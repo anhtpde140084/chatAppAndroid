@@ -19,7 +19,7 @@ import com.team.mychat.utilities.PreferenceManager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserActivity extends AppCompatActivity implements UserListener {
+public class UserActivity extends BaseActivity implements UserListener {
 
     private ActivityUserBinding binding;
     private PreferenceManager preferenceManager;
