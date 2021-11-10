@@ -5,22 +5,22 @@
         <item android:id="@+id/nav_home"
             android:title="@string/nav_home"
             android:icon="@drawable/ic_home"/>
-        <item android:id="@+id/favorites"
-            android:title="@string/nav_favorites"
-            android:icon="@drawable/icfavorite"/>
-        <item android:id="@+id/history"
-            android:title="@string/nav_history"
-            android:icon="@drawable/ic_baseline_history_24"/>
+        <item android:id="@+id/my_profile"
+            android:title="@string/nav_my_profile"
+            android:icon="@drawable/ic_person"/>
+        <item android:id="@+id/change_password"
+            android:title="@string/nav_change_password"
+            android:icon="@drawable/ic_change_password"/>
     </group>
 
-    <item android:title="@string/nav_account">
+    <item android:title="@string/more_information">
         <menu>
-            <item android:id="@+id/my_profile"
-                android:title="@string/nav_my_profile"
-                android:icon="@drawable/ic_person"/>
-            <item android:id="@+id/change_password"
-                android:title="@string/nav_change_password"
-                android:icon="@drawable/ic_change_password"/>
+            <item android:id="@+id/favorites"
+                android:title="@string/nav_favorites"
+                android:icon="@drawable/icfavorite"/>
+            <item android:id="@+id/history"
+                android:title="@string/nav_history"
+                android:icon="@drawable/ic_baseline_history_24"/>
             <item android:id="@+id/imageSignOut"
                 android:title="Logout"
                 android:icon="@drawable/ic_baseline_power_settings_new_24"/>

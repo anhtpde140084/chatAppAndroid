@@ -1,6 +1,5 @@
 package com.team.mychat.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -188,6 +187,7 @@ public class ChatActivity extends BaseActivity {
                 Constants.KEY_LAST_MESSSAGE,message,
                 Constants.KEY_TIMESTAMP, new Date()
         );
+
     }
     private void checkForConversion() {
         if (chatMessages.size() != 0) {

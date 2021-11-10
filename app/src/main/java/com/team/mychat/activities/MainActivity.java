@@ -30,6 +30,7 @@ import com.team.mychat.R;
 import com.team.mychat.databinding.ActivityMainBinding;
 import com.team.mychat.fragment.HomeFragment;
 import com.team.mychat.fragment.MyProfileFragment;
+import com.team.mychat.fragment.PasswordFragment;
 import com.team.mychat.utilities.Constants;
 import com.team.mychat.utilities.PreferenceManager;
 
@@ -48,7 +49,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     // tao constant
     private static final int FRAGMENT_HOME = 0;
     private static final int FRAGMENT_MY_PROFILE = 1;
-    private static final int FRAGMENT_SIGN_OUT = 2;
+    private static final int FRAGMENT_PASSWORD = 2;
     //current fragment
     private int mCurrentFragment = FRAGMENT_HOME;
     @Override
@@ -113,15 +114,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     // load user
-    private void loadUserDetails(){
+    public void loadUserDetails(){
         tvName.setText(preferenceManager.getString(Constants.KEY_NAME));
         tvEmail.setText(preferenceManager.getString(Constants.KEY_EMAIL));
         byte[] bytes = Base64.decode(preferenceManager.getString(Constants.KEY_IMAGE),Base64.DEFAULT);
         Bitmap bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
         imageView.setImageBitmap(bitmap);
-        System.out.println(preferenceManager.getString(Constants.KEY_EMAIL) + "aaa");
-        System.out.println(preferenceManager.getString(Constants.KEY_NAME));
     }
+
+
 
     private void signOut(){
         showToast("SignOut...");
@@ -153,6 +154,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             if(mCurrentFragment != FRAGMENT_MY_PROFILE){
                 replaceFragment(new MyProfileFragment());
                 mCurrentFragment = FRAGMENT_MY_PROFILE;
+            }
+        } else if(id == R.id.change_password){
+            if(mCurrentFragment != FRAGMENT_PASSWORD){
+                replaceFragment(new PasswordFragment());
+                mCurrentFragment = FRAGMENT_PASSWORD;
             }
         } else if(id == R.id.imageSignOut){
             signOut();

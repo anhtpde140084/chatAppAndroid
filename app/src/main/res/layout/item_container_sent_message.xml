@@ -14,6 +14,7 @@
         android:paddingStart="@dimen/_12sdp"
         android:paddingTop="@dimen/_8sdp"
         android:paddingBottom="@dimen/_8sdp"
+        android:paddingRight="@dimen/_8sdp"
         app:layout_constraintWidth_max="wrap"
         android:textColor="@color/white"
         android:textSize="@dimen/_13ssp"
