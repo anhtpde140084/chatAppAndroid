@@ -52,61 +52,76 @@ public class MyProfileFragment extends Fragment {
     private FirebaseFirestore db;
     private PreferenceManager preferenceManager;
     private ProgressBar progressBar;
-    private EditText edName, edEmail;
+    private EditText edName, edEmail, edPhone, edAddress;
     private MaterialButton buttonSave;
-    private TextView textName, textEmail, textUpdate,textCancel, textAddImage, lnName, lnEmail, nameMain, emailMain;
+    private TextView textName, textEmail, textUpdate, textCancel, textAddImage, nameMain, emailMain, textPhone, textAddress;
     private RoundedImageView imageView, avatar;
     private String encodedImage;
+    private LinearLayout  lnName, lnEmail, lnPhone, lnAddress;
 
     private MainActivity mainActivity;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_myprofile,container,false);
+        view = inflater.inflate(R.layout.fragment_myprofile, container, false);
         preferenceManager = new PreferenceManager(getActivity());
         initItem();
         loadUserDetails();
         setListener();
-        mainActivity =  (MainActivity) getActivity();
+        mainActivity = (MainActivity) getActivity();
         return view;
     }
 
-    private void initItem(){
+    private void initItem() {
         nameMain = view.findViewById(R.id.textName);
         //-------------------------
+        lnPhone =view.findViewById(R.id.layoutPhone);
+        lnAddress =view.findViewById(R.id.layoutAddress);
         lnEmail = view.findViewById(R.id.layoutEmail);
         lnName = view.findViewById(R.id.layoutName);
+        //
         textEmail = view.findViewById(R.id.textEmail);
         textName = view.findViewById(R.id.textName);
+        textPhone = view.findViewById(R.id.textPhone);
+        textAddress = view.findViewById(R.id.textAddress);
+        //
         progressBar = view.findViewById(R.id.progressBar);
         imageView = view.findViewById(R.id.imageProfile);
         edEmail = view.findViewById(R.id.updateEmail);
         edName = view.findViewById(R.id.updateName);
+        edPhone = view.findViewById(R.id.inputPhone);
+        edAddress = view.findViewById(R.id.inputAddress);
         buttonSave = view.findViewById(R.id.buttonUpdate);
         textUpdate = view.findViewById(R.id.textUpdate);
         textCancel = view.findViewById(R.id.textCancel);
-        textAddImage =view.findViewById(R.id.textUpdateImage);
+        textAddImage = view.findViewById(R.id.textUpdateImage);
         textAddImage.setVisibility(View.INVISIBLE);
         lnButton = view.findViewById(R.id.lnButton);
         layoutUpdateImage = view.findViewById(R.id.layoutImageUpdate);
         db = FirebaseFirestore.getInstance();
     }
 
-    private void loadUserDetails(){
+    private void loadUserDetails() {
         textName.setText(preferenceManager.getString(Constants.KEY_NAME));
         textEmail.setText(preferenceManager.getString(Constants.KEY_EMAIL));
+        textPhone.setText(preferenceManager.getString(Constants.KEY_PHONE));
+        textAddress.setText(preferenceManager.getString(Constants.KEY_ADDRESS));
         edName.setText(preferenceManager.getString(Constants.KEY_NAME));
         edEmail.setText(preferenceManager.getString(Constants.KEY_EMAIL));
-        byte[] bytes = Base64.decode(preferenceManager.getString(Constants.KEY_IMAGE),Base64.DEFAULT);
-        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+        edAddress.setText(preferenceManager.getString(Constants.KEY_ADDRESS));
+        edPhone.setText(preferenceManager.getString(Constants.KEY_PHONE));
+        byte[] bytes = Base64.decode(preferenceManager.getString(Constants.KEY_IMAGE), Base64.DEFAULT);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
         imageView.setImageBitmap(bitmap);
     }
 
-    private void setListener(){
+    private void setListener() {
 
         textUpdate.setOnClickListener(v -> {
-            textName.setVisibility(View.GONE);
-            textEmail.setVisibility(View.GONE);
+            loading(false);
+            lnAddress.setVisibility(View.GONE);
+            lnPhone.setVisibility(View.GONE);
             edEmail.setVisibility(View.VISIBLE);
             edName.setVisibility(View.VISIBLE);
             textUpdate.setVisibility(View.GONE);
@@ -114,15 +129,15 @@ public class MyProfileFragment extends Fragment {
             lnEmail.setVisibility(View.GONE);
             lnName.setVisibility(View.GONE);
             lnButton.setVisibility(View.VISIBLE);
-
-
+            edPhone.setVisibility(View.VISIBLE);
+            edAddress.setVisibility(View.VISIBLE);
         });
         textCancel.setOnClickListener(v -> {
-           cancelButton();
+            cancelButton();
         });
 
-        buttonSave.setOnClickListener(v-> {
-            if(isValid()){
+        buttonSave.setOnClickListener(v -> {
+            if (isValid()) {
                 updateInfor();
             }
         });
@@ -136,12 +151,12 @@ public class MyProfileFragment extends Fragment {
         });
     }
 
-    private void updateImage(){
+    private void updateImage() {
         DocumentReference documentReference = db.collection(Constants.KEY_COLLECTION_USERS)
                 .document(preferenceManager.getString(Constants.KEY_USER_ID));
         documentReference.update(Constants.KEY_IMAGE, encodedImage)
                 .addOnCompleteListener(task -> {
-                    if(task.isSuccessful()){
+                    if (task.isSuccessful()) {
                         showToast("Update image success!");
                         preferenceManager.putString(Constants.KEY_IMAGE, encodedImage);
                         mainActivity.loadUserDetails();
@@ -153,21 +168,28 @@ public class MyProfileFragment extends Fragment {
                     }
                 });
     }
-    private void updateInfor(){
+
+    private void updateInfor() {
         loading(true);
         DocumentReference documentReference = db.collection(Constants.KEY_COLLECTION_USERS)
                 .document(preferenceManager.getString(Constants.KEY_USER_ID));
         documentReference.update(Constants.KEY_NAME, edName.getText().toString().trim(),
-                Constants.KEY_EMAIL, edEmail.getText().toString().trim())
+                Constants.KEY_EMAIL, edEmail.getText().toString().trim(),
+                Constants.KEY_PHONE, edPhone.getText().toString().trim(),
+                Constants.KEY_ADDRESS, edAddress.getText().toString().trim())
                 .addOnCompleteListener(task -> {
-                    if(task.isSuccessful()){
+                    if (task.isSuccessful()) {
                         showToast("Update success!");
-                            preferenceManager.putString(Constants.KEY_EMAIL, edEmail.getText().toString().trim());
-                            preferenceManager.putString(Constants.KEY_NAME, edName.getText().toString().trim());
-                            mainActivity.loadUserDetails();
-                            textEmail.setText(edEmail.getText().toString());
-                            textName.setText(edName.getText().toString());
-                            cancelButton();
+                        preferenceManager.putString(Constants.KEY_EMAIL, edEmail.getText().toString().trim());
+                        preferenceManager.putString(Constants.KEY_NAME, edName.getText().toString().trim());
+                        preferenceManager.putString(Constants.KEY_PHONE, edPhone.getText().toString().trim());
+                        preferenceManager.putString(Constants.KEY_ADDRESS, edAddress.getText().toString().trim());
+                        mainActivity.loadUserDetails();
+                        textEmail.setText(edEmail.getText().toString());
+                        textName.setText(edName.getText().toString());
+                        textPhone.setText(edPhone.getText().toString());
+                        textAddress.setText(edAddress.getText().toString());
+                        cancelButton();
 
                     } else {
                         showToast("Something wrong!");
@@ -176,14 +198,16 @@ public class MyProfileFragment extends Fragment {
                 });
 
     }
+
     private void showToast(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
-    private Boolean isValid(){
-        if(edName.getText().toString().trim().isEmpty()){
+
+    private Boolean isValid() {
+        if (edName.getText().toString().trim().isEmpty()) {
             showToast("Enter name");
             return false;
-        } else if(!Patterns.EMAIL_ADDRESS.matcher(edEmail.getText().toString()).matches()){
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(edEmail.getText().toString()).matches()) {
             showToast("Enter valid email");
             return false;
         } else {
@@ -191,11 +215,11 @@ public class MyProfileFragment extends Fragment {
         }
     }
 
-    private void loading(Boolean isLoading){
-        if (isLoading){
+    private void loading(Boolean isLoading) {
+        if (isLoading) {
             buttonSave.setVisibility(View.INVISIBLE);
             progressBar.setVisibility(View.VISIBLE);
-        } else{
+        } else {
             buttonSave.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.INVISIBLE);
         }
@@ -223,7 +247,7 @@ public class MyProfileFragment extends Fragment {
                             imageView.setImageBitmap(bitmap);
                             textAddImage.setVisibility(View.GONE);
                             encodedImage = encodeImage(bitmap);
-                            if(encodedImage != null){
+                            if (encodedImage != null) {
                                 updateImage();
                             }
                         } catch (FileNotFoundException e) {
@@ -234,9 +258,9 @@ public class MyProfileFragment extends Fragment {
             }
     );
 
-    private void cancelButton(){
-        textName.setVisibility(View.VISIBLE);
-        textEmail.setVisibility(View.VISIBLE);
+    private void cancelButton() {
+        lnAddress.setVisibility(View.VISIBLE);
+        lnPhone.setVisibility(View.VISIBLE);
         edEmail.setVisibility(View.GONE);
         edName.setVisibility(View.GONE);
         textUpdate.setVisibility(View.VISIBLE);
@@ -244,5 +268,8 @@ public class MyProfileFragment extends Fragment {
         lnEmail.setVisibility(View.VISIBLE);
         lnName.setVisibility(View.VISIBLE);
         lnButton.setVisibility(View.GONE);
+        edPhone.setVisibility(View.GONE);
+        edAddress.setVisibility(View.GONE);
+        loading(false);
     }
 }

@@ -77,6 +77,8 @@ public class SignUpActivity extends AppCompatActivity {
                 user.put(Constants.KEY_EMAIL, binding.inputEmail.getText().toString());
                 user.put(Constants.KEY_PASSWORD, binding.inputPassword.getText().toString());
                 user.put(Constants.KEY_IMAGE, encodedImage);
+                user.put(Constants.KEY_PHONE, "");
+                user.put(Constants.KEY_ADDRESS, "");
                 database.collection(Constants.KEY_COLLECTION_USERS)
                         .add(user)
                         .addOnSuccessListener(documentReference -> {
@@ -85,6 +87,7 @@ public class SignUpActivity extends AppCompatActivity {
                             preferenceManager.putString(Constants.KEY_USER_ID, documentReference.getId());
                             preferenceManager.putString(Constants.KEY_NAME, binding.inputName.getText().toString());
                             preferenceManager.putString(Constants.KEY_IMAGE, encodedImage);
+                            preferenceManager.putString(Constants.KEY_EMAIL, binding.inputEmail.getText().toString());
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);

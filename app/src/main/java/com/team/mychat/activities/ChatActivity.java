@@ -136,27 +136,29 @@ public class ChatActivity extends BaseActivity {
     }
 
     private void sendMessage() {
-        HashMap<String, Object> message = new HashMap<>();
-        message.put(Constants.KEY_SENDER_ID, preferenceManager.getString(Constants.KEY_USER_ID));
-        message.put(Constants.KEY_RECEIVER_ID, receiverUser.id);
-        message.put(Constants.KEY_MESSAGE, binding.inputMessage.getText().toString());
-        message.put(Constants.KEY_TIMESTAMP, new Date());
-        database.collection(Constants.KEY_COLLECTION_CHAT).add(message);
-        if(conversionId !=null){
-            updateConversion(binding.inputMessage.getText().toString());
-        } else {
-            HashMap<String, Object> conversion = new HashMap<>();
-            conversion.put(Constants.KEY_SENDER_ID, preferenceManager.getString(Constants.KEY_USER_ID));
-            conversion.put(Constants.KEY_SENDER_NAME,preferenceManager.getString(Constants.KEY_NAME));
-            conversion.put(Constants.KEY_SENDER_IMAGE,preferenceManager.getString(Constants.KEY_IMAGE));
-            conversion.put(Constants.KEY_RECEIVER_ID,receiverUser.id);
-            conversion.put(Constants.KEY_RECEIVER_NAME,receiverUser.name);
-            conversion.put(Constants.KEY_RECEIVER_IMAGE,receiverUser.iamge);
-            conversion.put(Constants.KEY_LAST_MESSSAGE,binding.inputMessage.getText().toString());
-            conversion.put(Constants.KEY_TIMESTAMP,new Date());
-            addConversion(conversion);
+        if(binding.inputMessage.getText().toString().isEmpty() == false){
+            HashMap<String, Object> message = new HashMap<>();
+            message.put(Constants.KEY_SENDER_ID, preferenceManager.getString(Constants.KEY_USER_ID));
+            message.put(Constants.KEY_RECEIVER_ID, receiverUser.id);
+            message.put(Constants.KEY_MESSAGE, binding.inputMessage.getText().toString());
+            message.put(Constants.KEY_TIMESTAMP, new Date());
+            database.collection(Constants.KEY_COLLECTION_CHAT).add(message);
+            if(conversionId !=null){
+                updateConversion(binding.inputMessage.getText().toString());
+            } else {
+                HashMap<String, Object> conversion = new HashMap<>();
+                conversion.put(Constants.KEY_SENDER_ID, preferenceManager.getString(Constants.KEY_USER_ID));
+                conversion.put(Constants.KEY_SENDER_NAME,preferenceManager.getString(Constants.KEY_NAME));
+                conversion.put(Constants.KEY_SENDER_IMAGE,preferenceManager.getString(Constants.KEY_IMAGE));
+                conversion.put(Constants.KEY_RECEIVER_ID,receiverUser.id);
+                conversion.put(Constants.KEY_RECEIVER_NAME,receiverUser.name);
+                conversion.put(Constants.KEY_RECEIVER_IMAGE,receiverUser.iamge);
+                conversion.put(Constants.KEY_LAST_MESSSAGE,binding.inputMessage.getText().toString());
+                conversion.put(Constants.KEY_TIMESTAMP,new Date());
+                addConversion(conversion);
+            }
+            binding.inputMessage.setText(null);
         }
-        binding.inputMessage.setText(null);
     }
 
     private void loadReceiverDetails() {
