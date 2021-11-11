@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
         <activity
+            android:name=".activities.ViewDetailProfileActivity"
+            android:exported="true" />
+        <activity
             android:name=".activities.ForgotActivity"
             android:exported="true" />
         <activity

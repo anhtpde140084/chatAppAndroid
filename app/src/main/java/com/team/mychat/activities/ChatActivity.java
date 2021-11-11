@@ -1,6 +1,7 @@
 package com.team.mychat.activities;
 
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -172,6 +173,12 @@ public class ChatActivity extends BaseActivity {
         binding.layoutSend.setOnClickListener(v -> sendMessage());
     }
 
+    private void detailUser(){
+        Intent intent = new Intent(getApplicationContext(), ViewDetailProfileActivity.class);
+        intent.putExtra(Constants.KEY_USER_DETAIL, receiverUser );
+        startActivity(intent);
+    }
+
     private String getReadableDateTime(Date date) {
         return new SimpleDateFormat("MMMM dd, yyyy - hh:mm a", Locale.getDefault()).format(date);
     }
@@ -223,4 +230,5 @@ public class ChatActivity extends BaseActivity {
         super.onResume();
         listenAvailability();
     }
+
 }
